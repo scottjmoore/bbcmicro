@@ -4,8 +4,8 @@ helloworld.ssd:	HELLOWO
 	-@bbcim -ab disc.ssd -side 0 !BOOT
 	-@bbcim -a disc.ssd -side 0 HELLOWO
 
-HELLOWO:	helloworld.6502
-	-@vasm6502_oldstyle helloworld.6502 -chklabels -nocase -L helloworld.lst -Fbin -o HELLOWO
+HELLOWO:	helloworld.asm
+	-@vasm6502_oldstyle helloworld.asm -chklabels -nocase -L helloworld.lst -Fbin -o HELLOWO
 
 clean:
 	-@rm -f HELLOWO
