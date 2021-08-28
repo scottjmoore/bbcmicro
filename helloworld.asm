@@ -69,4 +69,4 @@ SetTextColour:
     rts
 
 Message:
-    db  "*** Hello World ***",13,10,255
+    db  "*** Hello World! ***",255
