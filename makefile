@@ -16,7 +16,7 @@ clean:
 
 run:
 	-@make
-	-@killall b-em 2>&1
+	-@killall b-em /dev/null 2>&1
 	-@b-em -autoboot -disc disc.ssd & disown
 
 clean-run:
