@@ -1,0 +1,30 @@
+PrintChar:      equ $ffe3
+
+PrintCharPtr:   equ $70
+
+    org $3000
+
+Start:
+    ldx #<Message
+    ldy #>Message
+    jsr PrintString
+    rts
+
+PrintString:
+    txa
+    sta PrintCharPtr
+    tya
+    sta PrintCharPtr + 1
+    ldy #0
+PrintStringLoop:
+    lda (PrintCharPtr),y
+    cmp #255
+    beq PrintStringDone
+    jsr PrintChar
+    iny
+    jmp PrintStringLoop
+PrintStringDone:
+    rts
+
+Message:
+    db  "Hello World!",13,10,255
