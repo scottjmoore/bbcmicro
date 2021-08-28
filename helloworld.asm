@@ -15,11 +15,34 @@ Start:
     lda #2
     jsr OSWRCH
 Loop:
+    ldx TextColour
+    inx
+    txa
+    and #%00000111
+    sta TextColour
+    jsr SetTextColour
+    cmp #0
+    bne SkipBackgroundColour
+    ldx BackgroundColour
+    inx
+    txa
+    and #%00000111
+    sta BackgroundColour
+    ora #%10000000
+    jsr SetTextColour
+
+SkipBackgroundColour:
     lxy Message
     jsr PrintString
     jmp Loop
 
     rts
+
+TextColour:
+    db $00
+
+BackgroundColour:
+    db $00
 
 PrintString:
     txa
@@ -37,5 +60,13 @@ PrintStringLoop:
 PrintStringDone:
     rts
 
+SetTextColour:
+    pha
+    lda #17
+    jsr OSWRCH
+    pla 
+    jsr OSWRCH
+    rts
+
 Message:
-    db  "Hello World! With More Text!",13,10,255
+    db  "*** Hello World ***",13,10,255
