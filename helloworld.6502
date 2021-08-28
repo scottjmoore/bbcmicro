@@ -1,10 +1,14 @@
-PrintChar:      equ $ffe3
+OSWRCH:            equ $ffee
 
-PrintCharPtr:   equ $70
+PrintStringPtr:   equ $70
 
     org $3000
 
 Start:
+    lda #22
+    jsr OSWRCH
+    lda #6
+    jsr OSWRCH
     ldx #<Message
     ldy #>Message
     jsr PrintString
@@ -12,19 +16,19 @@ Start:
 
 PrintString:
     txa
-    sta PrintCharPtr
+    sta PrintStringPtr
     tya
-    sta PrintCharPtr + 1
+    sta PrintStringPtr + 1
     ldy #0
 PrintStringLoop:
-    lda (PrintCharPtr),y
+    lda (PrintStringPtr),y
     cmp #255
     beq PrintStringDone
-    jsr PrintChar
+    jsr OSWRCH
     iny
     jmp PrintStringLoop
 PrintStringDone:
     rts
 
 Message:
-    db  "Hello World!",13,10,255
+    db  "Hello World! With More Text!",13,10,255
