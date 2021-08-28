@@ -7,15 +7,18 @@ endm
 
 PrintStringPtr:   equ $70
 
-    org $3000
+    org $2000
 
 Start:
     lda #22
     jsr OSWRCH
-    lda #6
+    lda #2
     jsr OSWRCH
+Loop:
     lxy Message
     jsr PrintString
+    jmp Loop
+
     rts
 
 PrintString:
