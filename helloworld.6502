@@ -1,5 +1,10 @@
 OSWRCH:            equ $ffee
 
+lxy macro
+    ldx #<\1
+    ldy #>\1
+endm
+
 PrintStringPtr:   equ $70
 
     org $3000
@@ -9,8 +14,7 @@ Start:
     jsr OSWRCH
     lda #6
     jsr OSWRCH
-    ldx #<Message
-    ldy #>Message
+    lxy Message
     jsr PrintString
     rts
 
