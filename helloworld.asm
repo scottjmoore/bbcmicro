@@ -99,7 +99,6 @@ PrintString:
     ldy #0
 PrintStringLoop:
     lda (PrintStringPtr),y
-    ;cmp #255
     beq PrintStringDone
     jsr OSWRCH
     iny
