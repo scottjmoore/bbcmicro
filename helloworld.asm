@@ -99,7 +99,7 @@ PrintString:
     ldy #0
 PrintStringLoop:
     lda (PrintStringPtr),y
-    cmp #255
+    ;cmp #255
     beq PrintStringDone
     jsr OSWRCH
     iny
@@ -126,5 +126,5 @@ Palette:
     db 0,0,255
 
 Message:
-    db  "*** Hello World! ***",255
+    db  "*** Hello World! ***",0
 
