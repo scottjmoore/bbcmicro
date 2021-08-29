@@ -5,7 +5,9 @@ lxy macro
     ldy #>\1
 endm
 
-PrintStringPtr:   equ $70
+PrintStringPtr:     equ $70
+
+PalettePtr:         equ $72
 
     org $2000
 
@@ -14,11 +16,14 @@ Start:
     jsr OSWRCH
     lda #2
     jsr OSWRCH
+    
+    jsr SetPalette
+
 Loop:
     ldx TextColour
     inx
     txa
-    and #%00000111
+    and #%00001111
     sta TextColour
     jsr SetTextColour
     cmp #0
@@ -26,7 +31,7 @@ Loop:
     ldx BackgroundColour
     inx
     txa
-    and #%00000111
+    and #%00001111
     sta BackgroundColour
     ora #%10000000
     jsr SetTextColour
@@ -44,6 +49,44 @@ TextColour:
 BackgroundColour:
     db $00
 
+SetTextColour:
+    pha
+    lda #17
+    jsr OSWRCH
+    pla 
+    jsr OSWRCH
+    rts
+
+SetPalette:
+    lda #<Palette
+    sta PalettePtr
+    lda #>Palette
+    sta PalettePtr+1
+
+    ldx #0
+    ldy #0
+SetPaletteLoop:
+    lda #19
+    jsr OSWRCH
+    lda #0
+    jsr OSWRCH
+    txa
+    jsr OSWRCH
+    lda (PalettePtr),y
+    jsr OSWRCH
+    iny
+    lda (PalettePtr),y
+    jsr OSWRCH
+    iny
+    lda (PalettePtr),y
+    jsr OSWRCH
+    iny
+    inx
+    cpx #16
+    bne SetPaletteLoop
+
+    rts
+
 PrintString:
     txa
     sta PrintStringPtr
@@ -60,13 +103,24 @@ PrintStringLoop:
 PrintStringDone:
     rts
 
-SetTextColour:
-    pha
-    lda #17
-    jsr OSWRCH
-    pla 
-    jsr OSWRCH
-    rts
+Palette:
+    db 0,0,0
+    db 64,64,64
+    db 128,128,128
+    db 255,255,255
+    db 32,0,0
+    db 64,0,0
+    db 128,0,0
+    db 255,0,0
+    db 0,32,0
+    db 0,64,0
+    db 0,128,0
+    db 0,255,0
+    db 0,0,32
+    db 0,0,64
+    db 0,0,128
+    db 0,0,255
 
 Message:
     db  "*** Hello World! ***",255
+
