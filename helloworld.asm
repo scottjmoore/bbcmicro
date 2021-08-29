@@ -6,7 +6,6 @@ lxy macro
 endm
 
 PrintStringPtr:     equ $70
-
 PalettePtr:         equ $72
 
     org $2000
@@ -16,7 +15,7 @@ Start:
     jsr SetMode
     jsr SetPalette
 
-Loop:
+StartLoop:
     ldx TextColour
     inx
     txa
@@ -36,7 +35,7 @@ Loop:
 SkipBackgroundColour:
     lxy Message
     jsr PrintString
-    jmp Loop
+    jmp StartLoop
 
     rts
 
@@ -119,7 +118,7 @@ Palette:
     db 0,64,0
     db 0,128,0
     db 0,255,0
-    db 0,0,3
+    db 0,0,0
     db 0,0,64
     db 0,0,128
     db 0,0,255
