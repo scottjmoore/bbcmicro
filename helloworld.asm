@@ -12,11 +12,8 @@ PalettePtr:         equ $72
     org $2000
 
 Start:
-    lda #22
-    jsr OSWRCH
     lda #2
-    jsr OSWRCH
-    
+    jsr SetMode
     jsr SetPalette
 
 Loop:
@@ -54,6 +51,13 @@ SetTextColour:
     lda #17
     jsr OSWRCH
     pla 
+    jsr OSWRCH
+    rts
+SetMode:
+    pha
+    lda #22
+    jsr OSWRCH
+    pla
     jsr OSWRCH
     rts
 
@@ -116,7 +120,7 @@ Palette:
     db 0,64,0
     db 0,128,0
     db 0,255,0
-    db 0,0,32
+    db 0,0,3
     db 0,0,64
     db 0,0,128
     db 0,0,255
