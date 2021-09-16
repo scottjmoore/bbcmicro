@@ -17,7 +17,7 @@ clean:
 run:
 	make
 	-@killall b-em
-	b-em -autoboot -disc disc.ssd &
+	b-em -s -i -autoboot -disc disc.ssd &
 
 clean-run:
 	make clean
