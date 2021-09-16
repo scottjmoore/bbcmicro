@@ -15,7 +15,7 @@ Start:
     jsr SetMode
     jsr SetPalette
 
-StartLoop:
+.Loop:
     ldx TextColour
     inx
     txa
@@ -23,7 +23,7 @@ StartLoop:
     sta TextColour
     jsr SetTextColour
     cmp #0
-    bne SkipBackgroundColour
+    bne .SkipBackgroundColour
     ldx BackgroundColour
     inx
     txa
@@ -32,10 +32,10 @@ StartLoop:
     ora #%10000000
     jsr SetTextColour
 
-SkipBackgroundColour:
+.SkipBackgroundColour:
     lxy Message
     jsr PrintString
-    jmp StartLoop
+    jmp .Loop
 
     rts
 
@@ -68,42 +68,42 @@ SetPalette:
 
     ldx #0
     ldy #0
-SetPaletteLoop:
+.Loop:
     lda #19
     jsr OSWRCH
     lda #0
     jsr OSWRCH
-    txa
+    txa 
     jsr OSWRCH
     lda (PalettePtr),y
     jsr OSWRCH
-    iny
+    iny 
     lda (PalettePtr),y
     jsr OSWRCH
-    iny
+    iny 
     lda (PalettePtr),y
     jsr OSWRCH
-    iny
-    inx
+    iny 
+    inx 
     cpx #16
-    bne SetPaletteLoop
+    bne .Loop
 
-    rts
+    rts 
 
 PrintString:
-    txa
+    txa 
     sta PrintStringPtr
-    tya
+    tya 
     sta PrintStringPtr + 1
     ldy #0
-PrintStringLoop:
+.Loop:
     lda (PrintStringPtr),y
     beq PrintStringDone
     jsr OSWRCH
-    iny
-    jmp PrintStringLoop
+    iny 
+    jmp .Loop
 PrintStringDone:
-    rts
+    rts 
 
 Palette:
     db 0,0,0
@@ -124,5 +124,6 @@ Palette:
     db 0,0,255
 
 Message:
-    db  "*** Hello World! ***",0
+    db  "abcdefghijklmnopqrst",0
+    ; db  "*** Hello World! ***",0
 
