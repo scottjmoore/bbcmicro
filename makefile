@@ -4,7 +4,7 @@ MISTERPATH = ${MISTER}:/media/fat/games/BBCMICRO/boot.vhd
 MISTERPASSWORD = 1
 MMFSNAME = BEEB.MMB
 DISKNAME = helloworld.ssd
-OBJS = HELLOWO !BOOT
+OBJS = HELLOWO !BOOT README
 
 ${MMFSNAME}:	${DISKNAME}
 	-@rm -f ${MMFSNAME}
@@ -17,8 +17,7 @@ helloworld.ssd:	${OBJS}
 	$(MMBTOOLSPATH)blank_ssd.pl ${DISKNAME}
 	$(MMBTOOLSPATH)title.pl ${DISKNAME} HELLOWORLD
 	$(MMBTOOLSPATH)opt4.pl ${DISKNAME} 3
-	${MMBTOOLSPATH}putfile.pl ${DISKNAME} !BOOT
-	${MMBTOOLSPATH}putfile.pl ${DISKNAME} HELLOWO
+	${MMBTOOLSPATH}putfile.pl ${DISKNAME} ${OBJS}
 	${MMBTOOLSPATH}info.pl ${DISKNAME}
 
 HELLOWO:	helloworld.asm
