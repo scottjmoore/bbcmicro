@@ -1,12 +1,16 @@
 MMBTOOLSPATH = @../../hoglet67/MMFS/tools/mmb_utils/
+MISTER = root@mister
+MISTERPATH = ${MISTER}:/media/fat/games/BBCMICRO/boot.vhd
+MISTERPASSWORD = 1
+MMFSNAME = BEEB.MMB
 DISKNAME = helloworld.ssd
 OBJS = HELLOWO !BOOT
 
-BEEB.MMB:	${DISKNAME}
-	-@rm -f BEEB.MMB
+${MMFSNAME}:	${DISKNAME}
+	-@rm -f ${MMFSNAME}
 	@$(MMBTOOLSPATH)dblank_mmb.pl
 	@$(MMBTOOLSPATH)dput_ssd.pl 0 ${DISKNAME}
-	${MMBTOOLSPATH}dcat.pl BEEB.MMB 
+	${MMBTOOLSPATH}dcat.pl ${MMFSNAME} 
 
 helloworld.ssd:	${OBJS}
 	-@rm -f ${DISKNAME}
@@ -22,18 +26,21 @@ HELLOWO:	helloworld.asm
 
 clean:
 	-@rm -f HELLOWO
-	-@rm -f BEEB.MMB
+	-@rm -f ${MMFSNAME}
 	-@rm -f *.ssd
 	-@rm -f *.bin
 	-@rm -f *.lst
 
-deploy:
-	rsync --progress BEEB.MMB root@mister:/media/fat/games/BBCMICRO/boot.vhd
+deploy: ${MMFSNAME}
+	@sshpass -p ${MISTERPASSWORD} rsync --progress ${MMFSNAME} ${MISTERPATH}
 
-run:
+deploy-run: ${MMFSNAME}
+	@sshpass -p ${MISTERPASSWORD} rsync --progress ${MMFSNAME} ${MISTERPATH}
+	@sshpass -p ${MISTERPASSWORD} ssh ${MISTER} "echo load_core /media/fat/_Computer/BBCMicro*.rbf >/dev/MiSTer_cmd"
+
+run: ${DISKNAME}
 	make
-	-@killall b-em
-	b-em -disc ${DISKNAME} -mx=5 -s -i -autoboot &
+	-@b-em -disc ${DISKNAME} -mx=5 -s -i -autoboot &
 
 clean-deploy:
 	make clean

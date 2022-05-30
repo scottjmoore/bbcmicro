@@ -11,7 +11,7 @@ PalettePtr:         equ $72
     org $2000
 
 Start:
-    lda #2
+    lda #1
     jsr SetMode
     jsr SetPalette
 
@@ -124,6 +124,6 @@ Palette:
     db 0,0,255
 
 Message:
-    db  "abcdefghijklmnopqrst",0
-    ; db  "*** Hello World! ***",0
+    db  "abcdefghijklmnopqrstabcdefghijklmnopqrst",0
+    ; db  "*** Hello World! ****** Hello World! ***",0
 
