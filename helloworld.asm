@@ -1,8 +1,8 @@
 OSWRCH:            equ $ffee
 
 lxy macro
-    ldx #<\1
-    ldy #>\1
+    ldx #>\1
+    ldy #<\1
 endm
 
 PrintStringPtr:     equ $70
@@ -13,6 +13,9 @@ PalettePtr:         equ $72
 Start:
     lda #2
     jsr SetMode
+.LoopTemp
+    jsr FillScreen
+    jmp .LoopTemp
 
 .Loop:
     ldx TextColour
@@ -74,6 +77,29 @@ PrintString:
     jmp .Loop
 PrintStringDone:
     rts 
+
+FillScreen:
+    lxy $3000
+    sty $70
+    stx $71
+    lxy $0000
+    sty $72
+    stx $73
+    lda #$00
+.Loop
+    lda ($72),y
+    sta ($70),y
+    iny
+    bne .Loop
+    ldx $73
+    inx
+    stx $73
+    ldx $71
+    inx
+    stx $71
+    cpx #$80
+    bne .Loop
+    rts
 
 Message:
     db  "abcdefghijklmnopqrst",0
