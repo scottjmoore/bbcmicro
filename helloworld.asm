@@ -15,31 +15,37 @@ Start:
     jsr SetMode
 .LoopTemp
     jsr FillScreen
+    ldx LoopCounter
+    inx
+    stx LoopCounter
     jmp .LoopTemp
 
-.Loop:
-    ldx TextColour
-    inx
-    txa
-    and #%00000111
-    sta TextColour
-    jsr SetTextColour
-    cmp #0
-    bne .SkipBackgroundColour
-    ldx BackgroundColour
-    inx
-    txa
-    and #%00000111
-    sta BackgroundColour
-    ora #%10000000
-    jsr SetTextColour
+LoopCounter:
+    db $00
 
-.SkipBackgroundColour:
-    lxy Message
-    jsr PrintString
-    jmp .Loop
+; .Loop:
+;     ldx TextColour
+;     inx
+;     txa
+;     and #%00000111
+;     sta TextColour
+;     jsr SetTextColour
+;     cmp #0
+;     bne .SkipBackgroundColour
+;     ldx BackgroundColour
+;     inx
+;     txa
+;     and #%00000111
+;     sta BackgroundColour
+;     ora #%10000000
+;     jsr SetTextColour
 
-    rts
+; .SkipBackgroundColour:
+;     lxy Message
+;     jsr PrintString
+;     jmp .Loop
+
+;     rts
 
 TextColour:
     db $00
