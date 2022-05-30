@@ -13,13 +13,12 @@ PalettePtr:         equ $72
 Start:
     lda #2
     jsr SetMode
-    jsr SetPalette
 
 .Loop:
     ldx TextColour
     inx
     txa
-    and #%00001111
+    and #%00000111
     sta TextColour
     jsr SetTextColour
     cmp #0
@@ -27,7 +26,7 @@ Start:
     ldx BackgroundColour
     inx
     txa
-    and #%00001111
+    and #%00000111
     sta BackgroundColour
     ora #%10000000
     jsr SetTextColour
@@ -52,6 +51,7 @@ SetTextColour:
     pla 
     jsr OSWRCH
     rts
+
 SetMode:
     pha
     lda #22
@@ -59,36 +59,6 @@ SetMode:
     pla
     jsr OSWRCH
     rts
-
-SetPalette:
-    lda #<Palette
-    sta PalettePtr
-    lda #>Palette
-    sta PalettePtr+1
-
-    ldx #0
-    ldy #0
-.Loop:
-    lda #19
-    jsr OSWRCH
-    lda #0
-    jsr OSWRCH
-    txa 
-    jsr OSWRCH
-    lda (PalettePtr),y
-    jsr OSWRCH
-    iny 
-    lda (PalettePtr),y
-    jsr OSWRCH
-    iny 
-    lda (PalettePtr),y
-    jsr OSWRCH
-    iny 
-    inx 
-    cpx #16
-    bne .Loop
-
-    rts 
 
 PrintString:
     txa 
@@ -104,24 +74,6 @@ PrintString:
     jmp .Loop
 PrintStringDone:
     rts 
-
-Palette:
-    db 0,0,0
-    db 64,64,64
-    db 128,128,128
-    db 255,255,255
-    db 32,0,0
-    db 64,0,0
-    db 128,0,0
-    db 255,0,0
-    db 0,32,0
-    db 0,64,0
-    db 0,128,0
-    db 0,255,0
-    db 0,0,32
-    db 0,0,64
-    db 0,0,128
-    db 0,0,255
 
 Message:
     db  "abcdefghijklmnopqrst",0
