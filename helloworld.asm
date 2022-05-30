@@ -86,11 +86,11 @@ PrintStringDone:
 
 FillScreen:
     lxy $3000
-    sty $70
     stx $71
+    sty $70
     lxy $0000
-    sty $72
     stx $73
+    sty $72
     lda #$00
 .Loop
     lda ($72),y
