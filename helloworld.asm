@@ -8,20 +8,15 @@ endm
 PrintStringPtr:     equ $70
 PalettePtr:         equ $72
 
-    org $2000
+    org $2900
 
 Start:
     lda #2
     jsr SetMode
-.LoopTemp
+.Loop
     jsr FillScreen
-    ldx LoopCounter
-    inx
-    stx LoopCounter
-    jmp .LoopTemp
-
-LoopCounter:
-    db $00
+    jmp .Loop
+    rts
 
 ; .Loop:
 ;     ldx TextColour
@@ -86,6 +81,8 @@ PrintStringDone:
 
 FillScreen:
     lxy $3000
+    ldx #$30
+    ldy #$00
     stx $71
     sty $70
     lxy $0000
@@ -93,6 +90,27 @@ FillScreen:
     sty $72
     lda #$00
 .Loop
+    lda ($72),y
+    sta ($70),y
+    iny
+    lda ($72),y
+    sta ($70),y
+    iny
+    lda ($72),y
+    sta ($70),y
+    iny
+    lda ($72),y
+    sta ($70),y
+    iny
+    lda ($72),y
+    sta ($70),y
+    iny
+    lda ($72),y
+    sta ($70),y
+    iny
+    lda ($72),y
+    sta ($70),y
+    iny
     lda ($72),y
     sta ($70),y
     iny
@@ -111,3 +129,5 @@ Message:
     db  "abcdefghijklmnopqrst",0
     ; db  "*** Hello World! ***",0
 
+LoopCounter:
+    db $77
